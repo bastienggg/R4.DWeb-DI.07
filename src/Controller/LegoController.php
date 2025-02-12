@@ -6,16 +6,16 @@ use App\Entity\Lego; // Ensure that the Lego class is correctly defined in the A
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
-use App\Service\LegoService;
+use App\Repository\LegoRepository;
 
 
 class LegoController extends AbstractController
 {
     #[Route('/', name: 'home')]
-    public function home(LegoService $legoService): Response
+    public function home(LegoRepository $legoService): Response
     {
         $response = new Response();
-        $legos = $legoService->getLegos();
+        $legos = $legoService->findAll();
         foreach ($legos as $lego) {
             $response->setContent($response->getContent() . $this->renderView('lego.html.twig', ['lego' => $lego]));
         }
@@ -23,7 +23,7 @@ class LegoController extends AbstractController
     }
 
     #[Route('/{collection}', name: 'filter_by_collection', requirements: ['collection' => 'creator|star_wars|creator_expert'])]
-    public function filter(string $collection, LegoService $legoService): Response
+    public function filter(string $collection, LegoRepository $legoService): Response
     {
         $response = new Response();
         if ($collection == 'star_wars') {
@@ -31,7 +31,7 @@ class LegoController extends AbstractController
         } else if ($collection == 'creator_expert') {
             $collection = 'creator expert';
         }
-        $legos = $legoService->getLegosByCollection($collection);
+        $legos = $legoService->findByCollection($collection);
         foreach ($legos as $lego) {
             $response->setContent($response->getContent() . $this->renderView('lego.html.twig', ['lego' => $lego]));
         }
