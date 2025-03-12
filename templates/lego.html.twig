@@ -6,7 +6,12 @@
   {% for collection in collections %}
     <a href="{{ path('filter_by_collection', {id: collection.id}) }}">{{ collection.name }}</a> |
   {% endfor %}
-  <a href="{{ path('lego_store_login') }}">Login</a>
+  {% if is_granted('IS_AUTHENTICATED_FULLY') %}
+    <span>Bonjour {{ app.user.email }} !</span>
+    <a href="{{ path('app_logout') }}">Déconnexion</a>
+  {% else %}
+    <a href="{{ path('lego_store_login') }}">Connexion</a>
+  {% endif %}
 </nav>
 <div class="lego_card">
   <div class="info_section">

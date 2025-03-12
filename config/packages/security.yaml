@@ -15,12 +15,17 @@ security:
             pattern: ^/(_(profiler|wdt)|css|images|js)/
             security: false
         main:
+            logout:
+                    path: app_logout
+                    target: /
             lazy: true
             provider: app_user_provider
 
             form_login:
                 login_path: lego_store_login
                 check_path: lego_store_login
+
+                
 
 
             # activate different ways to authenticate
