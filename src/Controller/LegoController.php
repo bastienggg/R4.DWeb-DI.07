@@ -2,7 +2,7 @@
 
 namespace App\Controller;
 
-use App\Entity\Lego; // Ensure that the Lego class is correctly defined in the App\Entity namespace
+use App\Entity\Lego;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
@@ -27,21 +27,15 @@ class LegoController extends AbstractController
         return $response;
     }
 
-    #[Route('/{collection}', name: 'filter_by_collection', requirements: ['collection' => 'creator|star_wars|creator_expert'])]
-    public function filter(string $collection, LegoCollectionRepository $collectionRepository): Response
+    #[Route('/collections/{id}', name: 'filter_by_collection')]
+    public function filter(int $id, LegoCollectionRepository $collectionRepository): Response
     {
-        if ($collection == 'star_wars') {
-            $collection = 'Star Wars';
-        } else if ($collection == 'creator_expert') {
-            $collection = 'creator expert';
-        }
-
-        $legoCollection = $collectionRepository->findOneBy(['name' => $collection]);
+        $legoCollection = $collectionRepository->find($id);
         if (!$legoCollection) {
             throw $this->createNotFoundException('Collection not found');
         }
 
-        $legos = $legoCollection->getLegos();
+        $legos = $legoCollection->getLego();
         $collections = $collectionRepository->findAll();
 
         $response = new Response();
@@ -54,11 +48,12 @@ class LegoController extends AbstractController
         return $response;
     }
 
-    #[Route('/collection', name: 'test')]
-    public function test(LegoCollectionRepository $collectionRepository): Response
-    {
-        $collections = $collectionRepository->findAll();
-        return $this->render('collections.html.twig', ['collections' => $collections]);
-    }
+    // Supprimer la route de test
+    // #[Route('/collection', name: 'test')]
+    // public function test(LegoCollectionRepository $collectionRepository): Response
+    // {
+    //     $collections = $collectionRepository->findAll();
+    //     return $this->render('collections.html.twig', ['collections' => $collections]);
+    // }
 }
 ?>

@@ -4,7 +4,7 @@
 <nav>
   <a href="/">All</a> |
   {% for collection in collections %}
-    <a href="/{{ collection.id }}">{{ collection.name }}</a> |
+    <a href="{{ path('filter_by_collection', {id: collection.id}) }}">{{ collection.name }}</a> |
   {% endfor %}
 </nav>
 <div class="lego_card">
