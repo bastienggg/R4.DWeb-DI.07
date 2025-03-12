@@ -24,6 +24,15 @@ class LegoRepository extends ServiceEntityRepository
             ->getQuery()
             ->getResult();
     }
+    public function findAllExcludingPremium()
+    {
+        return $this->createQueryBuilder('l')
+            ->leftJoin('l.category', 'c')
+            ->where('c.id != :premiumId')
+            ->setParameter('premiumId', 4)
+            ->getQuery()
+            ->getResult();
+    }
 
     //    /**
     //     * @return Lego[] Returns an array of Lego objects

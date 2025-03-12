@@ -10,13 +10,23 @@ use App\Repository\LegoRepository;
 use App\Repository\LegoCollectionRepository;
 use App\Entity\LegoCollection;
 
+
 class LegoController extends AbstractController
 {
     #[Route('/', name: 'home')]
     public function home(LegoRepository $legoService, LegoCollectionRepository $collectionRepository): Response
     {
         $response = new Response();
-        $legos = $legoService->findAll();
+
+        // Vérifiez si l'utilisateur est connecté
+        if ($this->getUser()) {
+            // Utilisateur connecté, récupérer toutes les catégories
+            $legos = $legoService->findAll();
+        } else {
+            // Utilisateur non connecté, exclure la catégorie premium
+            $legos = $legoService->findAllExcludingPremium();
+        }
+
         $collections = $collectionRepository->findAll();
         foreach ($legos as $lego) {
             $response->setContent($response->getContent() . $this->renderView('lego.html.twig', [
