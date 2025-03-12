@@ -6,6 +6,7 @@
   {% for collection in collections %}
     <a href="{{ path('filter_by_collection', {id: collection.id}) }}">{{ collection.name }}</a> |
   {% endfor %}
+  <a href="{{ path('lego_store_login') }}">Login</a>
 </nav>
 <div class="lego_card">
   <div class="info_section">

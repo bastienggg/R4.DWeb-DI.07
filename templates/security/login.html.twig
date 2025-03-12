@@ -1,0 +1,21 @@
+{# filepath: templates/security/login.html.twig #}
+{% extends 'base.html.twig' %}
+
+{% block title %}Connexion{% endblock %}
+
+{% block body %}
+    <form method="post" class="login-form">
+        <h1>Veuillez vous authentifier</h1>
+
+        {% if error %}
+            <div class="error">{{ error.messageKey|trans(error.messageData, 'security') }}</div>
+        {% endif %}
+
+        <label for="username">Email :</label>
+        <input type="email" name="_username" id="username" autocomplete="email" required autofocus value="{{ last_username }}">
+        <label for="password">Mot de passe :</label>
+        <input type="password" name="_password" id="password" autocomplete="current-password" required>
+
+        <button class="button btn-submit" type="submit">Connexion</button>
+    </form>
+{% endblock %}
